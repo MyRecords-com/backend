@@ -9,7 +9,11 @@ class React(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_date = DateField()
     location = models.CharField(max_length=100)
+    usr_type = models.CharField(max_length=50)
+    setup = models.TextField()
+    bio = models.TextField()
 
 class Collection(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
@@ -26,5 +30,9 @@ class Record(models.Model):
     genre = models.CharField(max_length=50)
     style = models.CharField(max_length=50)
 
-class Rating(models.Model):
+class Comment(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    created_date = models.DateTimeField()
+    record = models.ForeignKey(Record, on_delete=modles.CASCADE)
     rating = models.CharField()
+    comment = models.TextField()
