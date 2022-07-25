@@ -44,7 +44,8 @@ class ProfileView(APIView):
     def get(self, request):
 
         # profile = Profile.objects.get(location="Hong Kong, CN")
-        user = [ {"username": profile.user.username, "location": profile.location}
+        
+        user = [ {"username": profile.user.username, "first_name": profile.user.first_name, "last_name": profile.user.last_name, "location": profile.location, "setup": profile.setup, "bio": profile.bio, "created_date": profile.created_date}
         for profile in Profile.objects.all()    
         ]
         # return Response(user)
