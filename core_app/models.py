@@ -15,6 +15,9 @@ class Profile(models.Model):
     setup = models.TextField()
     bio = models.TextField()
 
+    def __str__(self):
+        return f'{self.user}'
+
 class Record(models.Model):
     name = models.CharField(max_length=100)
     label = models.CharField(max_length=50)
@@ -23,6 +26,10 @@ class Record(models.Model):
     released = models.IntegerField()
     genre = models.CharField(max_length=50)
     style = models.CharField(max_length=50)
+
+
+    def __str__(self):
+        return f'{self.name}'
 
 class Collection(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
