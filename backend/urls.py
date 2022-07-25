@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+import debug_toolbar
 from django.urls import path, include
 # from django.conf.urls import url
 from core_app.views import *
@@ -22,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core_app.urls')),
     path('wel/', ReactView.as_view(), name="something"),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]

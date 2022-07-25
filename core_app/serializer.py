@@ -10,3 +10,8 @@ class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
         fields = ['name', 'label', 'country', 'rec_format', 'released', 'genre', 'style']
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = [ 'username', 'location' ]

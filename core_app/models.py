@@ -37,6 +37,9 @@ class Collection(models.Model):
     description = models.TextField()
     records = models.ManyToManyField(Record)
 
+    def __str__(self):
+        return f'USER:  [ {self.user.user.username} ] || COLLECTION NAME:  [ {self.name} ]'
+
 class Comment(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)

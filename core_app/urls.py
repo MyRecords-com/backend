@@ -4,4 +4,5 @@ from core_app.views import *
 
 urlpatterns = [
     path('record/', RecordView.as_view(), name="records"),
+    path('profile/', ProfileView.as_view(), name="profiles"),
 ]
