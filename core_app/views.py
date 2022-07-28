@@ -1,4 +1,11 @@
+from urllib import request
+from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import render
+from django.http import JsonResponse
+from rest_framework import status, viewsets, generics
+from core_app.serializer import MyTokenObtainPairSerializer, RegisterSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from . models import *
 from rest_framework.response import Response
@@ -13,8 +20,41 @@ from django.http import HttpResponse
 
 # Create your views here.
   
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = RegisterSerializer
+
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/api/token/',
+        '/api/register/',
+        '/api/token/refresh/',
+        '/api/prediction/',
+        # '/core/todo/'
+    ]
+    return Response(routes)
+
+@api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticated,))
+def EndPoint(request):
+    if request.method == 'GET':
+        data = f"Congratulation {request.user}, your API just responded to GET request"
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        text = request.POST.get('text')
+        data = f'Congratulation your API just responded to POST request with text: {text}'
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    return Response({}, status.HTTP_400_BAD_REQUEST)
+
+
+
 class ReactView(APIView):
-    
+    permission_classes = [AllowAny]    
     serializer_class = ReactSerializer
   
     def get(self, request):
@@ -29,7 +69,7 @@ class ReactView(APIView):
             return  Response(serializer.data)
 
 class RecordView(APIView):
-
+    permission_classes = [AllowAny]
     serializer_class = RecordSerializer
     
     def get(self, request):
@@ -38,7 +78,7 @@ class RecordView(APIView):
         return Response(detail)
 
 class ProfileView(APIView):
-
+    permission_classes = [AllowAny]
     serializer_class = ProfileSerializer
     
     def get(self, request):
@@ -53,23 +93,3 @@ class ProfileView(APIView):
         # profile = [ {"name": detail.name, "label": detail.label, "country": detail.country, "rec_format": detail.rec_format, "released": detail.released, "genre": detail.genre, "style": detail.style} 
         # for detail in Record.objects.all()]
         # return Response(profile)
-
-
-def signup(request):
-  error_message = ''
-  if request.method == 'POST':
-    # This is how to create a 'user' form object
-    # that includes the data from the browser
-    form = UserCreationForm(request.POST)
-    if form.is_valid():
-      # This will add the user to the database
-      user = form.save()
-      # This is how we log a user in via code
-      login(request, user)
-      return redirect('index')
-    else:
-      error_message = 'Invalid sign up - try again'
-  # A bad POST or a GET request, so render signup.html with an empty form
-  form = UserCreationForm()
-  context = {'form': form, 'error_message': error_message}
-  return render(request, 'registration/signup.html', context)
