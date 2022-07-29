@@ -85,11 +85,15 @@ class ProfileView(APIView):
 
         # profile = Profile.objects.get(location="Hong Kong, CN")
         
+
         user = [ {"username": profile.user.username, "first_name": profile.user.first_name, "last_name": profile.user.last_name, "location": profile.location, "setup": profile.setup, "bio": profile.bio, "created_date": profile.created_date}
         for profile in Profile.objects.all()    
         ]
+
+        specificUser = Collection.objects.get(user=request.username)
+        userCollection = [{"clt_name": specificUser.name "description": specificUser.description "records": specificUser.records } for collection in Collection.objects.all()]
         # return Response(user)
-        return Response(user)
+        return Response(user, userCollection)
         # profile = [ {"name": detail.name, "label": detail.label, "country": detail.country, "rec_format": detail.rec_format, "released": detail.released, "genre": detail.genre, "style": detail.style} 
         # for detail in Record.objects.all()]
         # return Response(profile)
