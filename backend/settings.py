@@ -44,10 +44,14 @@ INSTALLED_APPS = [
     'core_app',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken'
 ]
 
 REST_FRAMEWORK = { 
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAdminUser' ]
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated' ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -164,6 +168,6 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=15),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }

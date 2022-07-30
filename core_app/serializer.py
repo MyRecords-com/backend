@@ -61,7 +61,13 @@ class RecordSerializer(serializers.ModelSerializer):
         model = Record
         fields = ['name', 'label', 'country', 'rec_format', 'released', 'genre', 'style']
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer): 
     class Meta:
         model = Profile
-        fields = [ 'username', 'first_name', 'last_name', 'location', 'setup', 'bio', 'created_date' ]
+        fields = '__all__'
+
+class CollectionSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = Collection
+        model = Profile
+        fields = '__all__'
