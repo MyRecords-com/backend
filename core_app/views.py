@@ -54,14 +54,15 @@ def EndPoint(request):
         return Response({'response': data}, status=status.HTTP_200_OK)
     return Response({}, status.HTTP_400_BAD_REQUEST)
 
-# @api_view(['GET'])
-# @permission_classes((IsAuthenticated,))
-# def getProfiles(request):
-#     datas = Profile.objects.get(user=request.user)
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def getProfiles(request):
+    datas = Profile.objects.get(user=request.user)
 
-#     if request.method == 'GET':
-#         data = f"Congratulation {datas.user.email}, your API just responded to GET request"
-#         return Response({'response': data})
+    if request.method == 'GET':
+        data = f"Congratulation {datas.user.email}, your API just responded to GET request"
+        return Response({'response': data})
+   
     # user = request.user
     # profiles = user.profile_set.all()
     # serializer = ProfileSerializer(profiles, many=True)
@@ -114,22 +115,19 @@ class ProfileView(APIView):
 
     def get(self, request):
         datas = Profile.objects.get(user=request.user)
+        if request.method == 'GET':
+            # data = f"Congratulation {datas.user.first_name}, your API just responded to GET request"
+            # return Response({'response': data})
 
-        # if request.method == 'GET':
-        #     data = f"Congratulation {datas.user.first_name}, your API just responded to GET request"
-        #     return Response({'response': data})
 
-        # user = datas.setup
-        # user2 = datas.bio
-        profileData = [{'user': datas.user.username, 'created_date': datas.created_date, 'location': datas.location, 'usr_type': datas.usr_type, 'setup': datas.setup, 'bio': datas.bio}]
-        # return Response({'setup': user, 'bio': user2})
-        return Response(profileData)
+            profileData = {'user': datas.user.username, 'created_date': datas.created_date, 'location': datas.location, 'usr_type': datas.usr_type, 'setup': datas.setup, 'bio': datas.bio}
+            return Response(profileData)
 
 
 class CollectionView(APIView):
     serializer_class = CollectionSerializer
-    permission_classes = [IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = [AllowAny]
+    authentication_classes = [JWTAuthentication]
 
     def get_User (request):
     # current_user = request.user
@@ -137,7 +135,7 @@ class CollectionView(APIView):
     # print(request.user.username)
 
         # access_token_obj = AccessToken(request.auth)
-        print(request.user)
+        print(request.data)
 
     # permission_classes = [AllowAny]
     # # serializer_class = ProfileSerializer
