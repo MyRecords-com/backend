@@ -22,6 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['username'] = user.username
         token['email'] = user.email
+        
         # ...
 
         return token
@@ -67,7 +68,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CollectionSerializer(serializers.ModelSerializer): 
+    
+    records = RecordSerializer(read_only=True, many=True)
+
     class Meta:
         model = Collection
-        model = Profile
         fields = '__all__'

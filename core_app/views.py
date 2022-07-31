@@ -126,17 +126,25 @@ class ProfileView(APIView):
 
 class CollectionView(APIView):
     serializer_class = CollectionSerializer
-    permission_classes = [AllowAny]
-    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def get_User (request):
-    # current_user = request.user
-    # context = {"user": current_user}
-    # print(request.user.username)
 
+    def get(self, request):
+        
+        
+        if request.method == 'GET':
+            collection = Collection.objects.get(user__user=self.request.user)
+            collections = { 'name': collection.name, 'description': collection.description }
+            serializer = CollectionSerializer(collection)
+            # recordss = Collection.objects.get(user__user=self.request.user)
+            # allRecords = recordss.records
+            # serializer = RecordSerializer(allRecords, many=True)
+            return Response(serializer.data)
+
+        
+        
+        
         # access_token_obj = AccessToken(request.auth)
-        print(request.data)
-
     # permission_classes = [AllowAny]
     # # serializer_class = ProfileSerializer
     # # serializer_class = MyTokenObtainPairSerializer
