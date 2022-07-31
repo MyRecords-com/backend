@@ -39,8 +39,6 @@ def getRoutes(request):
         '/register/',
         '/token/refresh/',
         '/prediction/',
-        '/profile/'
-
     ]
     return Response(routes)
 
@@ -93,19 +91,6 @@ class RecordView(APIView):
         for detail in Record.objects.all()]
         return Response(detail)
 
-
-# @permission_classes((IsAuthenticated,))
-# class CollectionView():
-#     serializer_class = CollectionSerializer
-#     # permission_classes = [IsAuthenticated]
-#     authentication_classes = [JWTAuthentication]
-
-#     def get_User (request):
-#     # current_user = request.user
-#     # context = {"user": current_user}
-#     # print(request.user.username)
-#         access_token_obj = AccessToken(request.auth)
-#         print(access_token_obj)
     
     
     # def get(self, request):
@@ -140,6 +125,19 @@ class ProfileView(APIView):
         # return Response({'setup': user, 'bio': user2})
         return Response(profileData)
 
+
+class CollectionView(APIView):
+    serializer_class = CollectionSerializer
+    permission_classes = [IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+
+    def get_User (request):
+    # current_user = request.user
+    # context = {"user": current_user}
+    # print(request.user.username)
+
+        # access_token_obj = AccessToken(request.auth)
+        print(request.user)
 
     # permission_classes = [AllowAny]
     # # serializer_class = ProfileSerializer
