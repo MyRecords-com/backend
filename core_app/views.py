@@ -84,7 +84,7 @@ class ReactView(APIView):
             return  Response(serializer.data)
 
 class RecordView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     serializer_class = RecordSerializer
     
     def get(self, request):
@@ -92,6 +92,22 @@ class RecordView(APIView):
         for detail in Record.objects.all()]
         return Response(detail)
 
+    def post(self, request):
+        if request.method == 'POST':
+          data = request.data
+          collection = data['collection']
+          name = data['name']
+          label = data['label']
+          country = data['country']
+          recformat = 'Vinyl 12'
+          released = data['released']
+          genre = data['genre']
+          style = data['style']
+          
+          addedRecord = Record.objects.create(name=name, label=label, country=country, rec_format=recformat, released=released, genre=genre, style=style)
+          addedCollection = Collection.objects.filter(name=collection)
+        #   addedCollection.objects.create(name=)
+          return Response('Record Added to Your Collection!') 
     
     
     # def get(self, request):
@@ -133,9 +149,9 @@ class CollectionView(APIView):
         
         
         if request.method == 'GET':
-            collection = Collection.objects.get(user__user=self.request.user)
-            collections = { 'name': collection.name, 'description': collection.description }
-            serializer = CollectionSerializer(collection)
+            collection = Collection.objects.filter(user__user=self.request.user)
+            # collections = { 'name': collection.name, 'description': collection.description }
+            serializer = CollectionSerializer(collection, many=True)
             # recordss = Collection.objects.get(user__user=self.request.user)
             # allRecords = recordss.records
             # serializer = RecordSerializer(allRecords, many=True)
