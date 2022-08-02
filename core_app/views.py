@@ -105,8 +105,11 @@ class RecordView(APIView):
           style = data['style']
           
           addedRecord = Record.objects.create(name=name, label=label, country=country, rec_format=recformat, released=released, genre=genre, style=style)
-          addedCollection = Collection.objects.filter(name=collection)
-        #   addedCollection.objects.create(name=)
+          print(addedRecord)
+          
+          addedCollection = Collection.objects.get(name=collection)
+          addedCollection.records.add(addedRecord)
+
           return Response('Record Added to Your Collection!') 
     
     
